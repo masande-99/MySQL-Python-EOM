@@ -11,27 +11,8 @@ root = Tk()
 root.title("Login")
 root.geometry('450x500')
 
+global myresult
 
-
-def verify():
-    users = user.get()
-    passs = passw.get()
-    sql ="select * from Login where Username = %s and Password + %s"
-    mycursor.execute(sql, [(users), (passs)])
-    results = mycursor.fetchall
-    if results:
-        for i in results:
-            logged()
-            break
-    else:
-            failed()
-
-def failed():
-     messagebox.showinfo("Failed loggging  in")
-def logged():
-    messagebox.showinfo("You have succesfully loggged in")
-
-    root.destroy()
 
 username = Label (root, text="Enter username")
 username.pack()
@@ -41,14 +22,35 @@ user.pack()
 password = Label (root ,text="Enter your password")
 password.pack()
 passw = Entry(root, width=45)
-passw.pack()
+passw.pack(ipady=40)
 
 lgnbtn = Button(root , text="Submit")
 lgnbtn.pack()
 
-rgstbtn = Button(root, text="Register", command=verify)
+rgstbtn = Button(root, text="Register")
 rgstbtn.pack()
+def get_info():
 
+    mydb = mysql.connector.connect(
+      host="localhost",
+      user="lifechoices",
+      password="@Lifechoices1234",
+      database="lifechoicesonline"
+    )
+
+    mycursor = mydb.cursor()
+
+    mycursor.execute("SELECT * FROM users")
+
+    myresult = mycursor.fetchall()
+
+    for x in myresult:
+        print(x)
+
+
+
+
+get_info()
 
 
 root.mainloop()
